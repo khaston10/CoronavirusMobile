@@ -9,6 +9,7 @@ public class PatientData : MonoBehaviour
     public int ageOfPatient;
     public string sexOfPatient;
     public string statusOfPatient;
+    public Sprite picOfPatient;
 
     public float patientTimer;
 
@@ -33,6 +34,15 @@ public class PatientData : MonoBehaviour
         ageOfPatient = GlobalPatientData.agesOfPatients[Random.Range(0, 10)];
         sexOfPatient = GlobalPatientData.sexesOfPatients[Random.Range(0, 10)];
         statusOfPatient = GlobalPatientData.statusOfPatients[Random.Range(1, 4)];
+
+        if(sexOfPatient == "M")
+        {
+            picOfPatient = GlobalPatientData.picOfPatient[Random.Range(2,4)];
+        }
+        else
+        {
+            picOfPatient = GlobalPatientData.picOfPatient[Random.Range(0, 2)];
+        }
     }
     #endregion
 }

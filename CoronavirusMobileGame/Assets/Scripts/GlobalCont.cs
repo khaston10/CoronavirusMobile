@@ -12,6 +12,7 @@ public class GlobalCont : MonoBehaviour
     public int ageOfDoctor;
     public string sexOfDoctor;
     public string statusOfDoctor;
+    public Sprite spriteOfDoctor;
     #endregion
 
     #region Variables - Stats

@@ -57,6 +57,15 @@ public class Main : MonoBehaviour
     public string statusOfDoctor;
     public Sprite spriteOfDoctor;
 
+    // This section hold the physical doctor and animations.
+    public GameObject doctorPrefab1;
+    public GameObject doctorPrefab2;
+    public GameObject doctor;
+    public Animator docAnim;
+    public float doctorSpeed;
+    public Vector3 targetPos;
+    public GameObject[] roomTriggers; //Layout [Room, Bed1, Bed2, Bed3, Bed4, Bed5, Bed6, Sink]
+
     #endregion
 
     #region Variables - Stats
@@ -98,14 +107,22 @@ public class Main : MonoBehaviour
             ClearPatientDataFromScreen(i);
         }
 
+        // Create Doctor from Prefab that matches.
+        if (nameOfDoctor == "Kristen") doctor = Instantiate(doctorPrefab1);
+        else doctor = Instantiate(doctorPrefab2);
+        doctor.transform.position = Vector3.zero;
 
-
+        //Initialize Doctor Animator.
+        docAnim = doctor.GetComponentInChildren<Animator>();
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Move Doctor Towards Trigger if Doc Is Moving.
+        doctor.transform.position = Vector3.MoveTowards(doctor.transform.position, targetPos, doctorSpeed * Time.deltaTime);
+        
         
     }
 
@@ -135,6 +152,7 @@ public class Main : MonoBehaviour
         GlobalCont.Instance.spriteOfDoctor = spriteOfDoctor;
 
     }
+
     public void HidePatientPanels()
     {
         for (int i = 0; i < patientPanels.Length; i++)
@@ -270,7 +288,30 @@ public class Main : MonoBehaviour
 
     }
 
+    public void MoveDocToTrigger(int triggerNum)
+    {
+        // This function should move the doctor to a trigger and play the correct animations.
+        // When the doctor reachers the trigger the doctor should stop and the idle anim plays.
+
+        // Decide if the trigger is left or right of the doctor to play the correct anim.
+        if(doctor.transform.position.x - roomTriggers[triggerNum].transform.position.x < 0)
+        {
+            // Play Right Animation
+            docAnim.Play("MWalkRight");
+        }
+
+        else
+        {
+            // Play Left Animation TODO.
+            docAnim.Play("MWalkLeft");
+        }
+
+        // Set the target.
+        targetPos = roomTriggers[triggerNum].transform.position;
+    }
+
     #endregion
+
 
     #endregion
 }

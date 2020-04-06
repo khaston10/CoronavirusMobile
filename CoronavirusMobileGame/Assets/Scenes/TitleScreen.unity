@@ -1165,7 +1165,7 @@ MonoBehaviour:
   sexOfDoctor: 
   statusOfDoctor: HEALTHY
   spriteOfDoctor: {fileID: 0}
-  day: 0
+  day: 1
   patientsHealed: 0
   patientsDeceased: 0
 --- !u!4 &1077119665

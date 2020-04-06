@@ -12,6 +12,11 @@ public class PatientData : MonoBehaviour
     public Sprite picOfPatient;
 
     public float patientTimer;
+    public bool needsTreatment;
+    public float treatmentTimer;
+    private float timeBetweenNeedForTreatment;
+    private int bedAssigned;
+    private int currentWarningMessageIndex;
 
     #endregion
     // Start is called before the first frame update
@@ -19,12 +24,86 @@ public class PatientData : MonoBehaviour
     {
         // Populate all the basic information for the patient
         LoadPatientData();
+
+        // Set time until patient needs treatment, currently set at 10 - 30 seconds.
+        timeBetweenNeedForTreatment = Random.Range(10, 30);
+
+        
+    }
+
+    private void Start()
+    {
+        bedAssigned = System.Array.IndexOf(GameObject.Find("MainController").GetComponent<Main>().currentPatients, gameObject);
+
+        // Create New Warning Bubble at start.
+        currentWarningMessageIndex = System.Array.IndexOf(GlobalPatientData.statusOfPatients, statusOfPatient); // 0 - Healthy, 1 - Infected, ... 5 - Deceased
+
+        if (currentWarningMessageIndex != 0 && currentWarningMessageIndex != 5)
+        {
+            GameObject.Find("MainController").GetComponent<Main>().CreateWarningBubbleAtBed(bedAssigned + 1, currentWarningMessageIndex - 1);
+            needsTreatment = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         patientTimer += Time.deltaTime;
+
+        
+        // Check to see if the patient needs to be updated.
+        if (patientTimer > timeBetweenNeedForTreatment)
+        {
+            // Delete Warning Bubble if it has not been deleted.
+            if (needsTreatment)
+            {
+                GameObject.Find("MainController").GetComponent<Main>().DestroyWarningBubbleAtBed(bedAssigned + 1);
+            }
+
+            // Deal with Case: 1 Patient is getting Healthier, Case 2: Patient is getting worse.
+            if (needsTreatment == false)
+            {
+                // Update Patient Status.
+                int tempIndex = System.Array.IndexOf(GlobalPatientData.statusOfPatients, statusOfPatient);
+
+                if (tempIndex != 0)
+                {
+                    statusOfPatient = GlobalPatientData.statusOfPatients[tempIndex - 1];
+                }
+
+                // Update patient data on screen.
+                GameObject.Find("MainController").GetComponent<Main>().UpdatePatientDataToScreen(System.Array.IndexOf(GameObject.Find("MainController").GetComponent<Main>().currentPatients, gameObject));
+            }
+
+            else if (patientTimer > timeBetweenNeedForTreatment && needsTreatment == true)
+            {
+                // Update Patient Status.
+                int tempIndex = System.Array.IndexOf(GlobalPatientData.statusOfPatients, statusOfPatient);
+
+                if (tempIndex != GlobalPatientData.statusOfPatients.Length - 1)
+                {
+                    statusOfPatient = GlobalPatientData.statusOfPatients[tempIndex + 1];
+                }
+
+                // Update patient data on screen.
+                GameObject.Find("MainController").GetComponent<Main>().UpdatePatientDataToScreen(bedAssigned);
+            }
+
+            // Create New Warning Bubble if needed and set needsTreatment if needed.
+            currentWarningMessageIndex = System.Array.IndexOf(GlobalPatientData.statusOfPatients, statusOfPatient); // 0 - Healthy, 1 - Infected, ... 5 - Deceased
+
+            if (currentWarningMessageIndex != 0 && currentWarningMessageIndex != 5)
+            {
+                GameObject.Find("MainController").GetComponent<Main>().CreateWarningBubbleAtBed(bedAssigned + 1, currentWarningMessageIndex - 1);
+                needsTreatment = true;
+            }
+            
+
+            // Reset Patient Timer and need for treatment.
+            patientTimer = 0;
+            
+        }
+        
     }
 
     #region Functions

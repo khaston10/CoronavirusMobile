@@ -27,6 +27,15 @@ public class TriggerController : MonoBehaviour
         {
             // Play The Doctors Idle Animation.
             GameObject.Find("MainController").GetComponent<Main>().docAnim.Play("MIdle");
+
+            // If patient is healthy or dead and doctor enters trigger, display the Discharge Panel.
+            if (GameObject.Find("MainController").GetComponent<Main>().currentPatients[triggerNum - 1] != null &&
+                (GameObject.Find("MainController").GetComponent<Main>().currentPatients[triggerNum - 1].GetComponent<PatientData>().statusOfPatient == "HEALTHY" ||
+                GameObject.Find("MainController").GetComponent<Main>().currentPatients[triggerNum - 1].GetComponent<PatientData>().statusOfPatient == "DECEASED"))
+            {
+                GameObject.Find("MainController").GetComponent<Main>().DischargePanel.SetActive(true);
+            }
+
         }
 
         // Update Current Patient Buttons if Doctor is on trigger.
@@ -34,6 +43,11 @@ public class TriggerController : MonoBehaviour
         {
             GameObject.Find("MainController").GetComponent<Main>().SetBedButtonsOnOff(triggerNum - 1, true);
         }
+
+        // Update the doctors current bed.
+        GameObject.Find("MainController").GetComponent<Main>().doctorsCurrentBed = triggerNum - 1;
+
+        
         
     }
 

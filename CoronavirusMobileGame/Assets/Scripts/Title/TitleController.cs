@@ -102,7 +102,6 @@ public class TitleController : MonoBehaviour
         for(int i = 0; i < buttonLights.Length; i++)
         {
             buttonLights[i].sprite = blankImage;
-            Debug.Log("Clearing Pic");
         }
 
         buttonLights[doc].sprite = geenLightImage;

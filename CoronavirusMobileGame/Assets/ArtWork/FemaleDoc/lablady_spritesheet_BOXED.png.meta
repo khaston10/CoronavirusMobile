@@ -1187,10 +1187,10 @@ TextureImporter:
       name: wr1
       rect:
         serializedVersion: 2
-        x: 565
-        y: 225
-        width: 29
-        height: 29
+        x: 566
+        y: 227
+        width: 28
+        height: 27
       alignment: 1
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1209,12 +1209,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 598
-        y: 226
+        y: 227
         width: 28
-        height: 29
+        height: 27
       alignment: 1
       pivot: {x: 0, y: 1}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1229,13 +1229,13 @@ TextureImporter:
       name: wr3
       rect:
         serializedVersion: 2
-        x: 630
-        y: 226
+        x: 631
+        y: 227
         width: 27
-        height: 29
+        height: 27
       alignment: 1
       pivot: {x: 0, y: 1}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1250,13 +1250,13 @@ TextureImporter:
       name: wr4
       rect:
         serializedVersion: 2
-        x: 661
-        y: 226
-        width: 30
-        height: 29
+        x: 662
+        y: 227
+        width: 28
+        height: 27
       alignment: 1
       pivot: {x: 0, y: 1}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1902,9 +1902,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 566
-        y: 194
+        y: 195
         width: 28
-        height: 30
+        height: 28
       alignment: 1
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1922,10 +1922,10 @@ TextureImporter:
       name: wl2
       rect:
         serializedVersion: 2
-        x: 597
-        y: 194
-        width: 29
-        height: 30
+        x: 598
+        y: 195
+        width: 28
+        height: 28
       alignment: 1
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1943,10 +1943,10 @@ TextureImporter:
       name: wl3
       rect:
         serializedVersion: 2
-        x: 629
-        y: 194
-        width: 30
-        height: 30
+        x: 630
+        y: 195
+        width: 28
+        height: 28
       alignment: 1
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1964,10 +1964,10 @@ TextureImporter:
       name: wl4
       rect:
         serializedVersion: 2
-        x: 661
-        y: 194
-        width: 30
-        height: 30
+        x: 662
+        y: 195
+        width: 28
+        height: 28
       alignment: 1
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2238,9 +2238,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2
-        y: 161
+        y: 162
         width: 28
-        height: 29
+        height: 28
       alignment: 1
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -2259,9 +2259,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 34
-        y: 161
+        y: 162
         width: 28
-        height: 29
+        height: 28
       alignment: 1
       pivot: {x: 0, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}

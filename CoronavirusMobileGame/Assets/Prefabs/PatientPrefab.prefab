@@ -47,3 +47,7 @@ MonoBehaviour:
   ageOfPatient: 0
   sexOfPatient: 
   statusOfPatient: 
+  picOfPatient: {fileID: 0}
+  patientTimer: 0
+  needsTreatment: 1
+  treatmentTimer: 0

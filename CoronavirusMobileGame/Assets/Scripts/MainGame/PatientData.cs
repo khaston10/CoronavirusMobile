@@ -17,6 +17,7 @@ public class PatientData : MonoBehaviour
     private float timeBetweenNeedForTreatment;
     private int bedAssigned;
     private int currentWarningMessageIndex;
+    private int randomIndex;
 
     #endregion
     // Start is called before the first frame update
@@ -109,9 +110,10 @@ public class PatientData : MonoBehaviour
     #region Functions
     public void LoadPatientData()
     {
-        nameOfPatient = GlobalPatientData.namesOfPatients[Random.Range(0, 10)];
-        ageOfPatient = GlobalPatientData.agesOfPatients[Random.Range(0, 10)];
-        sexOfPatient = GlobalPatientData.sexesOfPatients[Random.Range(0, 10)];
+        randomIndex = Random.Range(0, 2586);
+        nameOfPatient = GlobalPatientData.namesOfPatients[randomIndex];
+        ageOfPatient = GlobalPatientData.agesOfPatients[randomIndex];
+        sexOfPatient = GlobalPatientData.sexesOfPatients[randomIndex];
         statusOfPatient = GlobalPatientData.statusOfPatients[Random.Range(1, 4)];
 
         if(sexOfPatient == "M")

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour
 {
@@ -54,6 +55,8 @@ public class Main : MonoBehaviour
     public GameObject[] warningBubbleLocations; // 0 - Sink, 1 - Bed 1, 2 - Bed 2, ...
     public GameObject[] activeWarningBubbles = new GameObject[7]; // This is used to keep track of active bubbles for deletion.
     public GameObject t; // Used when creating new Warning Bubbles to temporaly hold the object;
+
+    public int waitingRoomFullLimit; // How many patients can be in the waiting room before game over.
     #endregion
 
     #region Variables Doctor
@@ -148,6 +151,13 @@ public class Main : MonoBehaviour
         {
             numberOfNewPatients += 1;
             UpdateStatsToScreen();
+
+            // Check to see if waiting room is full - GAMEOVER
+            if (numberOfNewPatients > waitingRoomFullLimit)
+            {
+                SaveData();
+                SceneManager.LoadScene(2);
+            }
 
             //Reset Timer
             newPatientTimer = 0;

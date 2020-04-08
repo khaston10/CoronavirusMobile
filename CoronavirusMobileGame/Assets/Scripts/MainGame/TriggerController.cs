@@ -58,6 +58,12 @@ public class TriggerController : MonoBehaviour
         {
             GameObject.Find("MainController").GetComponent<Main>().SetBedButtonsOnOff(triggerNum - 1, false);
         }
-        
+
+        // If the Discharge panel is active and the doctor walks away. We want to set it to inactive.
+        if (GameObject.Find("MainController").GetComponent<Main>().DischargePanel){
+            GameObject.Find("MainController").GetComponent<Main>().DischargePanel.SetActive(false);
+        }
     }
+
+ 
 }

@@ -51,12 +51,18 @@ public class Main : MonoBehaviour
     public Image[] newPatientButtonImages;
 
     // Warning Bubbles and warning bubble location objects.
-    public GameObject[] warningBubblePrefab; // 0 - Mask, 1 - IV, 2 - Cough, 3 - Ven
+    public GameObject[] warningBubblePrefab; // 0 - Healthy 1 - Mask, 2 - IV, 3 - Cough, 4 - Ven,  5 - Deceased 
     public GameObject[] warningBubbleLocations; // 0 - Sink, 1 - Bed 1, 2 - Bed 2, ...
     public GameObject[] activeWarningBubbles = new GameObject[7]; // This is used to keep track of active bubbles for deletion.
     public GameObject t; // Used when creating new Warning Bubbles to temporaly hold the object;
 
     public int waitingRoomFullLimit; // How many patients can be in the waiting room before game over.
+
+    // This deals with putting an image of the patient in the bad.
+    public GameObject[] physicalPatientPrefabs;
+    public GameObject[] activePhysicalPatients = new GameObject[6]; // This is to keep track of the objects so we can delete later.
+    public GameObject[] physicalBeds; // So we have the location to put the patient at.
+    public GameObject physicalPatientTemp;
     #endregion
 
     #region Variables Doctor
@@ -231,6 +237,15 @@ public class Main : MonoBehaviour
                 UpdatePatientDataToScreen(doctorsCurrentBed);
                 SetNewPatientButtonsOnOff(doctorsCurrentBed, true);
 
+                // Delete Warning Bubble if it is still there.
+                if (activeWarningBubbles[doctorsCurrentBed + 1] != null)
+                {
+                    DestroyWarningBubbleAtBed(doctorsCurrentBed + 1);
+                }
+
+                // Destroy the physical patient image.
+                RemovePhysicalPatientFromBed(doctorsCurrentBed);
+
                 // Hide Panel
                 HideDischargePanel();
             }
@@ -255,6 +270,15 @@ public class Main : MonoBehaviour
                 UpdatePatientDataToScreen(doctorsCurrentBed);
                 SetNewPatientButtonsOnOff(doctorsCurrentBed, true);
 
+                // Delete Warning Bubble if it is still there.
+                if (activeWarningBubbles[doctorsCurrentBed + 1] != null)
+                {
+                    DestroyWarningBubbleAtBed(doctorsCurrentBed + 1);
+                }
+
+                // Destroy the physical patient image.
+                RemovePhysicalPatientFromBed(doctorsCurrentBed);
+
                 // Hide Panel
                 HideDischargePanel();
             }
@@ -277,6 +301,7 @@ public class Main : MonoBehaviour
         numberOfNewPatientsText.text = numberOfNewPatients.ToString();
         dayText.text = day.ToString();
     }
+
 
     #region Functions - Set Lights For Buttons
     public void SetButtonImgAvailable(Image buttonImg)
@@ -342,6 +367,9 @@ public class Main : MonoBehaviour
             numberOfNewPatients -= 1;
             // Update Text object on screen.
             UpdateStatsToScreen();
+
+            // Place the image of the patient at the bed.
+            PlacePhysicalPatientOnBed(bed);
         }
 
         else
@@ -422,6 +450,23 @@ public class Main : MonoBehaviour
     public void DestroyWarningBubbleAtBed(int bed)
     {
         Destroy(activeWarningBubbles[bed]);
+        activeWarningBubbles[bed] = null;
+    }
+
+    public void PlacePhysicalPatientOnBed(int bed)
+    {
+        // Pic a random physical patient image. This will need to be updated when we worry about matching the image to the profile pic.
+        physicalPatientTemp = Instantiate(physicalPatientPrefabs[Random.Range(0, physicalPatientPrefabs.Length)]);
+        activePhysicalPatients[bed] = physicalPatientTemp;
+
+        // Place patient on bed.
+        physicalPatientTemp.transform.position = physicalBeds[bed].transform.position;
+    }
+
+    public void RemovePhysicalPatientFromBed(int bed)
+    {
+        // Destory the game object.
+        Destroy(activePhysicalPatients[bed]);
     }
 
     #region Functions - Treatment For Individual Beds.

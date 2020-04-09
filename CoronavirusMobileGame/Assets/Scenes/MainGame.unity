@@ -1790,6 +1790,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172875391}
   m_CullTransparentMesh: 0
+--- !u!1 &178147791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 178147792}
+  - component: {fileID: 178147794}
+  - component: {fileID: 178147793}
+  m_Layer: 5
+  m_Name: LightImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &178147792
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178147791}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1403804676}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 300, y: 300}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &178147793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178147791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: a35b151eea1c2de43a63764c264c1d01, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &178147794
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178147791}
+  m_CullTransparentMesh: 0
 --- !u!1 &178877722
 GameObject:
   m_ObjectHideFlags: 0
@@ -3335,14 +3408,14 @@ RectTransform:
   m_GameObject: {fileID: 356006472}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.55, y: 1.575, z: 1}
   m_Children: []
   m_Father: {fileID: 65194110}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 45, y: -80}
+  m_AnchoredPosition: {x: 1.800003, y: -142.7}
   m_SizeDelta: {x: -110, y: -160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &356006474
@@ -3369,7 +3442,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 2
-    m_MaxSize: 40
+    m_MaxSize: 20
     m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -13704,6 +13777,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1199316339}
+  - {fileID: 178147792}
   m_Father: {fileID: 1082154346}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13754,7 +13828,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1403804678}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1740716490}
+        m_MethodName: ClickWashHands
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1403804678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17292,6 +17377,8 @@ MonoBehaviour:
   - {fileID: 339836031}
   - {fileID: 1368255841}
   - {fileID: 753595300}
+  handWashButtons:
+  - {fileID: 178147793}
   newPatientButtonImages:
   - {fileID: 2147471327}
   - {fileID: 1926011055}
@@ -17306,6 +17393,8 @@ MonoBehaviour:
   - {fileID: 9186937545517406065, guid: f1ed35e1be417da4097188ac058a19ac, type: 3}
   - {fileID: 7898376572369249632, guid: 8736a1633d378d44799363cc00eb25bd, type: 3}
   - {fileID: 3649734053336258021, guid: 17d70162772d51e40b3c299d2fd80c47, type: 3}
+  - {fileID: 8505581516606294300, guid: 5b16efbfdbf9efb4e8ad7ea36d9c6509, type: 3}
+  - {fileID: 5592265493670118148, guid: 119958c0d1ccf79419b816aea48a2862, type: 3}
   warningBubbleLocations:
   - {fileID: 1170665729}
   - {fileID: 1951911524}
@@ -17328,6 +17417,13 @@ MonoBehaviour:
   - {fileID: 1884161426284678693, guid: d4a421c707193e5429700e189125d3b7, type: 3}
   - {fileID: 4469131264414343790, guid: 9c2855717ed88f443ac8527c6d3e22cb, type: 3}
   - {fileID: 6658851815045274319, guid: 732c3caa3699f5045a173e72e978ddba, type: 3}
+  activePhysicalPatients:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   physicalBeds:
   - {fileID: 566717234}
   - {fileID: 18163609}
@@ -17358,6 +17454,12 @@ MonoBehaviour:
   - {fileID: 399244537}
   - {fileID: 677942380}
   - {fileID: 1894445753}
+  handWashingTimer: 0
+  timeDoctorHasToWashHands: 10
+  timeBetweenHandWashMin: 5
+  timeBetweenHandWashMax: 10
+  timeBetweenHandWash: 10
+  warningTime: 5
   day: 0
   patientsHealed: 0
   patientsDeceased: 0

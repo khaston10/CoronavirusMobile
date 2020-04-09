@@ -48,7 +48,7 @@ public class EndController : MonoBehaviour
 
     public void SetTextToEndGameScreen()
     {
-        if (statusOfDoctor == "Infected") titeText.text = nameOfDoctor + " is INFECTED";
+        if (statusOfDoctor == "INFECTED") titeText.text = nameOfDoctor + " is INFECTED";
         else titeText.text = "Too Many Patients Waiting!";
         dayText.text = day.ToString();
         patientsSavedText.text = patientsHealed.ToString();

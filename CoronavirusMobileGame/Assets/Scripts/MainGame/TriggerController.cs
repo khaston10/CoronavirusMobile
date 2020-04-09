@@ -29,7 +29,7 @@ public class TriggerController : MonoBehaviour
             GameObject.Find("MainController").GetComponent<Main>().docAnim.Play("MIdle");
 
             // If patient is healthy or dead and doctor enters trigger, display the Discharge Panel.
-            if (GameObject.Find("MainController").GetComponent<Main>().currentPatients[triggerNum - 1] != null &&
+            if (triggerNum != 0 && GameObject.Find("MainController").GetComponent<Main>().currentPatients[triggerNum - 1] != null &&
                 (GameObject.Find("MainController").GetComponent<Main>().currentPatients[triggerNum - 1].GetComponent<PatientData>().statusOfPatient == "HEALTHY" ||
                 GameObject.Find("MainController").GetComponent<Main>().currentPatients[triggerNum - 1].GetComponent<PatientData>().statusOfPatient == "DECEASED"))
             {
@@ -43,6 +43,7 @@ public class TriggerController : MonoBehaviour
         {
             GameObject.Find("MainController").GetComponent<Main>().SetBedButtonsOnOff(triggerNum - 1, true);
         }
+        else if (triggerNum == 0) GameObject.Find("MainController").GetComponent<Main>().SetBedButtonsOnOff(6, true);
 
         // Update the doctors current bed.
         GameObject.Find("MainController").GetComponent<Main>().doctorsCurrentBed = triggerNum - 1;
@@ -58,6 +59,7 @@ public class TriggerController : MonoBehaviour
         {
             GameObject.Find("MainController").GetComponent<Main>().SetBedButtonsOnOff(triggerNum - 1, false);
         }
+        else if (triggerNum == 0) GameObject.Find("MainController").GetComponent<Main>().SetBedButtonsOnOff(6, false);
 
         // If the Discharge panel is active and the doctor walks away. We want to set it to inactive.
         if (GameObject.Find("MainController").GetComponent<Main>().DischargePanel){

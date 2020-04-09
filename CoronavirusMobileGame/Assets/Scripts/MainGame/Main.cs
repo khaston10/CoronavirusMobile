@@ -46,8 +46,9 @@ public class Main : MonoBehaviour
     public Image[] bedButtons4;
     public Image[] bedButtons5;
     public Image[] bedButtons6;
-    // Layout For bedButtonsForAllBeds [bedButtons1[], bedButtons2[], bedButtons3[], bedButtons4[], bedButtons5[], bedButtons6[]]
-    public Image[][] bedButtonsForAllBeds = new Image[6][];
+    public Image[] handWashButtons;
+    // Layout For bedButtonsForAllBeds [bedButtons1[], bedButtons2[], bedButtons3[], bedButtons4[], bedButtons5[], bedButtons6[], handWashButtons]
+    public Image[][] bedButtonsForAllBeds = new Image[7][];
     public Image[] newPatientButtonImages;
 
     // Warning Bubbles and warning bubble location objects.
@@ -82,6 +83,16 @@ public class Main : MonoBehaviour
     public float doctorSpeed;
     public Vector3 targetPos;
     public GameObject[] roomTriggers; //Layout [Room, Bed1, Bed2, Bed3, Bed4, Bed5, Bed6, Sink]
+
+    // Deals with hand washing.
+    public float handWashingTimer;
+    public float timeDoctorHasToWashHands; // Once the player is prompted, this is the time they have to respond.
+    public float timeBetweenHandWashMin; // For an element of randomness, the time between washings will be a random.
+    public float timeBetweenHandWashMax; // number between these two variables.
+    public float timeBetweenHandWash;
+    private bool needsToWashHands;
+    public float warningTime; // The warning bubble will turn more serious if there is only this amount of time left.
+    private bool handWashWarning;
 
     #endregion
 
@@ -122,6 +133,7 @@ public class Main : MonoBehaviour
         bedButtonsForAllBeds[3] = bedButtons4;
         bedButtonsForAllBeds[4] = bedButtons5;
         bedButtonsForAllBeds[5] = bedButtons6;
+        bedButtonsForAllBeds[6] = handWashButtons;
 
         for(int i = 0; i < 6; i++)
         {
@@ -131,6 +143,7 @@ public class Main : MonoBehaviour
             // Clear Patient Information From Screen.
             ClearPatientDataFromScreen(i);
         }
+        SetBedButtonsOnOff(6, false);
 
         // Create Doctor from Prefab that matches.
         if (nameOfDoctor == "Kristen") doctor = Instantiate(doctorPrefab1);
@@ -151,6 +164,7 @@ public class Main : MonoBehaviour
         // Main Game Loop - THINGS PUT HERE NEED TO BE CLEAN AND STREAM LINED!!!
         mainTimer += Time.deltaTime; // Update Timer
         newPatientTimer += Time.deltaTime;
+        handWashingTimer += Time.deltaTime;
 
         // New Patient Update
         if(newPatientTimer > timeBetweenNewPatients)
@@ -168,6 +182,43 @@ public class Main : MonoBehaviour
             //Reset Timer
             newPatientTimer = 0;
         }
+
+        // Hand Wash Update
+        if (needsToWashHands == false && handWashingTimer > timeBetweenHandWash)
+        {
+            // Create warning bubble at hand wash station.
+            CreateWarningBubbleAtBed(0, 6);
+
+            // Set bool so doctor needs to wash hands.
+            needsToWashHands = true;
+
+            // Set doctors status to "CONTAMINATED"
+            statusOfDoctor = "CONTAMINATED";
+            statusOfDoctorText.text = statusOfDoctor;
+            
+
+            // reset timer.
+            handWashingTimer = 0;
+        }
+
+        else if (handWashWarning == false && needsToWashHands && handWashingTimer > timeDoctorHasToWashHands - warningTime)
+        {
+            // Replace the warning bubble with a RED warning bubble so the user knows there is only a few seconds to infection.
+            DestroyWarningBubbleAtBed(0);
+            CreateWarningBubbleAtBed(0, 7);
+
+            handWashWarning = true;
+        }
+
+        else if (handWashWarning && handWashingTimer > timeDoctorHasToWashHands)
+        {
+            statusOfDoctor = GlobalPatientData.statusOfPatients[1];
+            SaveData();
+            SceneManager.LoadScene(2);
+        }
+
+
+
 
         // End Of Day Tasks
         if(mainTimer > lenghtOfDay)
@@ -551,6 +602,25 @@ public class Main : MonoBehaviour
 
         // Set the target.
         targetPos = roomTriggers[triggerNum].transform.position;
+    }
+
+    public float SetNewTimeBetweenHandWash(float min, float max)
+    {
+        return Random.Range(min, max);
+    }
+
+    public void ClickWashHands()
+    {
+        // Check to see if doctor is in range to wash.
+        if (bedButtonsForAllBeds[6][0].sprite.name == "GreenCircle" && needsToWashHands)
+        {
+            Debug.Log("Washing");
+            DestroyWarningBubbleAtBed(0);
+            needsToWashHands = false;
+            handWashWarning = false;
+        }
+
+        else Debug.Log("Out of range OR Does not need to wash");
     }
 
     #endregion

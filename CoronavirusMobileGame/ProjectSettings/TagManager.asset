@@ -11,6 +11,10 @@ TagManager:
   - Bed5Trigger
   - Bed6Trigger
   - SinkTrigger
+  - Top
+  - Bottom
+  - Right
+  - Left
   layers:
   - Default
   - TransparentFX
@@ -20,7 +24,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Virus
   - 
   - 
   - 

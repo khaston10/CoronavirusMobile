@@ -18,9 +18,17 @@ public class TitleController : MonoBehaviour
     public int day;
     public int patientsHealed;
     public int patientsDeceased;
+    public int gameDifficulty;
+    #endregion
+
+    #region Audio Sources
+    public AudioSource clickGood1;
+    public AudioSource clickGood2;
     #endregion
 
     #region Variables - Text and Images to Update
+    public Dropdown difficultyDropDown;
+    public GameObject tutorialPanel;
     public Text doctorsNameText;
     public Text doctorsTaxText;
     public Image[] buttonLights;
@@ -38,14 +46,30 @@ public class TitleController : MonoBehaviour
     {
         LoadData();
 
-        ClickDoctor(0);
-        
+        // Set Doc 0 as selection.
+        // Update text on screen.
+        doctorsNameText.text = doctorsNames[0];
+        doctorsTaxText.text = taxonomyOfDoctors[0];
+
+        // Load variables to pass on to next screen.
+        nameOfDoctor = doctorsNames[0];
+        ageOfDoctor = agesOfDoctors[0];
+        sexOfDoctor = genderOfDoctors[0];
+        spriteOfDoctor = spriteOfDoctors[0];
+
+
+        // Update Select Box.
+        TurnLightOnOff(0);
+
+        tutorialPanel.SetActive(false);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        // Update difficulty.
+        gameDifficulty = difficultyDropDown.value;
     }
 
     #region Functions
@@ -59,6 +83,7 @@ public class TitleController : MonoBehaviour
         day = GlobalCont.Instance.day;
         patientsHealed = GlobalCont.Instance.patientsHealed;
         patientsDeceased = GlobalCont.Instance.patientsDeceased;
+        gameDifficulty = GlobalCont.Instance.gameDifficulty;
     }
 
     public void SaveData()
@@ -71,11 +96,13 @@ public class TitleController : MonoBehaviour
         GlobalCont.Instance.patientsHealed = patientsHealed;
         GlobalCont.Instance.patientsDeceased = patientsDeceased;
         GlobalCont.Instance.spriteOfDoctor = spriteOfDoctor;
+        GlobalCont.Instance.gameDifficulty = gameDifficulty;
 
     }
 
     public void ClickStart()
     {
+        clickGood1.Play();
         SaveData();
         SceneManager.LoadScene(1);
     }
@@ -85,6 +112,9 @@ public class TitleController : MonoBehaviour
         // Update text on screen.
         doctorsNameText.text = doctorsNames[doc];
         doctorsTaxText.text = taxonomyOfDoctors[doc];
+
+        // Play audio.
+        clickGood2.Play();
 
         // Load variables to pass on to next screen.
         nameOfDoctor = doctorsNames[doc];
@@ -107,7 +137,17 @@ public class TitleController : MonoBehaviour
         buttonLights[doc].sprite = geenLightImage;
     }
 
+    public void ClickTutorial()
+    {
+        tutorialPanel.SetActive(true);
+        clickGood1.Play();
+    }
 
+    public void ExitTutorialPanel()
+    {
+        tutorialPanel.SetActive(false);
+        clickGood2.Play();
+    }
 
     #endregion
 }

@@ -96,10 +96,19 @@ public class Main : MonoBehaviour
 
     #endregion
 
+    #region Audio Sources
+    public AudioSource musicSource;
+    public AudioSource clickGood1;
+    public AudioSource clickGood2;
+    public AudioSource clickBad1;
+    public AudioSource warning1;
+    #endregion
+
     #region Variables - Stats
     public int day;
     public int patientsHealed;
     public int patientsDeceased;
+    public int gameDifficulty;
     public int numberOfNewPatients;
     public int timeBetweenNewPatients; // In seconds
 
@@ -113,6 +122,8 @@ public class Main : MonoBehaviour
     void Start()
     {
         LoadData();
+        LoadGameDifficulty();
+        timeBetweenHandWash = SetNewTimeBetweenHandWash(timeBetweenHandWashMin, timeBetweenHandWashMax);
 
         // Disable all panels/buttons.
         HidePatientPanels();
@@ -243,6 +254,8 @@ public class Main : MonoBehaviour
         patientsHealed = GlobalCont.Instance.patientsHealed;
         patientsDeceased = GlobalCont.Instance.patientsDeceased;
         spriteOfDoctor = GlobalCont.Instance.spriteOfDoctor;
+        gameDifficulty = GlobalCont.Instance.gameDifficulty;
+        GlobalCont.Instance.gameDifficulty = gameDifficulty;
     }
 
     public void SaveData()
@@ -256,6 +269,39 @@ public class Main : MonoBehaviour
         GlobalCont.Instance.patientsDeceased = patientsDeceased;
         GlobalCont.Instance.spriteOfDoctor = spriteOfDoctor;
 
+    }
+
+    public void LoadGameDifficulty()
+    {
+        if (gameDifficulty == 0)
+        {
+            timeBetweenNewPatients = 10;
+            waitingRoomFullLimit = 10;
+            timeDoctorHasToWashHands = 30;
+            timeBetweenHandWashMin = 20;
+            timeBetweenHandWashMax = 120;
+            warningTime = 10;
+        }
+
+        else if (gameDifficulty == 1)
+        {
+            timeBetweenNewPatients = 8;
+            waitingRoomFullLimit = 10;
+            timeDoctorHasToWashHands = 20;
+            timeBetweenHandWashMin = 20;
+            timeBetweenHandWashMax = 60;
+            warningTime = 8;
+        }
+
+        else
+        {
+            timeBetweenNewPatients = 6;
+            waitingRoomFullLimit = 10;
+            timeDoctorHasToWashHands = 15;
+            timeBetweenHandWashMin = 20;
+            timeBetweenHandWashMax = 40;
+            warningTime = 5;
+        }
     }
 
     public void HidePatientPanels()
@@ -297,6 +343,9 @@ public class Main : MonoBehaviour
                 // Destroy the physical patient image.
                 RemovePhysicalPatientFromBed(doctorsCurrentBed);
 
+                // Play Click Sound
+                clickGood1.Play();
+
                 // Hide Panel
                 HideDischargePanel();
             }
@@ -304,6 +353,7 @@ public class Main : MonoBehaviour
             else
             {
                 Debug.Log("Patient is not healthy");
+                clickBad1.Play();
             }
         }
 
@@ -330,6 +380,9 @@ public class Main : MonoBehaviour
                 // Destroy the physical patient image.
                 RemovePhysicalPatientFromBed(doctorsCurrentBed);
 
+                // Play Click Sound
+                clickGood1.Play();
+
                 // Hide Panel
                 HideDischargePanel();
             }
@@ -337,6 +390,8 @@ public class Main : MonoBehaviour
             else
             {
                 Debug.Log("Patient is not dead");
+                // Play Click Sound
+                clickBad1.Play();
             }
         }
 
@@ -421,11 +476,16 @@ public class Main : MonoBehaviour
 
             // Place the image of the patient at the bed.
             PlacePhysicalPatientOnBed(bed);
+
+            // Play Click Sound
+            clickGood1.Play();
         }
 
         else
         {
             Debug.Log("TODO Handle No New Patient");
+            // Play Click Sound
+            clickBad1.Play();
         }
         
 
@@ -485,17 +545,22 @@ public class Main : MonoBehaviour
     {
         HidePatientPanels();
         patientPanels[bedNumber].SetActive(true);
+
+        // Play Click Sound
+        clickGood1.Play();
     }
 
     public void CreateWarningBubbleAtBed(int bed, int warning)
     {
+        // Play Warning Sound
+        warning1.Play();
+
         // Create bubble and place it at location.
         t = Instantiate(warningBubblePrefab[warning], warningBubbleLocations[bed].transform);
 
         // Save bubble to array for deletion latter.
         activeWarningBubbles[bed] = t;
 
-        // 
     }
 
     public void DestroyWarningBubbleAtBed(int bed)
@@ -560,14 +625,24 @@ public class Main : MonoBehaviour
             // Check To see if the user selected the correct treatment.
             if (currentPatients[bed].GetComponent<PatientData>().statusOfPatient == GlobalPatientData.statusOfPatients[treatment + 1])
             {
+                // Play Click Sound
+                clickGood1.Play();
+
                 // Destory the warning Message and change patients bool, so they get healther.
                 DestroyWarningBubbleAtBed(bed + 1);
                 currentPatients[bed].GetComponent<PatientData>().needsTreatment = false;
             }
-           
+
+        else clickBad1.Play();
+
         }
 
-        else Debug.Log("Doctor is out of range.");
+        else 
+        {
+            // Play Click Sound
+            clickBad1.Play();
+        }
+        
     }
     #endregion
 
@@ -614,13 +689,16 @@ public class Main : MonoBehaviour
         // Check to see if doctor is in range to wash.
         if (bedButtonsForAllBeds[6][0].sprite.name == "GreenCircle" && needsToWashHands)
         {
-            Debug.Log("Washing");
+            // Play Click Sound.
+            clickGood1.Play();
+
             DestroyWarningBubbleAtBed(0);
             needsToWashHands = false;
             handWashWarning = false;
+            SetNewTimeBetweenHandWash(timeBetweenHandWashMin, timeBetweenHandWashMax);
         }
 
-        else Debug.Log("Out of range OR Does not need to wash");
+        else clickBad1.Play(); ;
     }
 
     #endregion

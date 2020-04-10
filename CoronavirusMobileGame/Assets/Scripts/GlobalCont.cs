@@ -19,6 +19,7 @@ public class GlobalCont : MonoBehaviour
     public int day;
     public int patientsHealed;
     public int patientsDeceased;
+    public int gameDifficulty;
     #endregion
 
     void Awake()

@@ -12,6 +12,7 @@ public class EndController : MonoBehaviour
     public int day;
     public int patientsHealed;
     public int patientsDeceased;
+    public int gameDifficulty;
     #endregion
 
     #region Text objects to update
@@ -19,6 +20,13 @@ public class EndController : MonoBehaviour
     public Text dayText;
     public Text patientsSavedText;
     public Text patientsLostText;
+    public GameObject creditsPanel;
+    #endregion
+
+    #region Audio Sources
+    public AudioSource musicSource;
+    public AudioSource clickGood1;
+    public AudioSource clickGood2;
     #endregion
 
     // Start is called before the first frame update
@@ -28,7 +36,9 @@ public class EndController : MonoBehaviour
 
         // Set texts objects initially.
         SetTextToEndGameScreen();
-        
+
+        creditsPanel.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -44,6 +54,7 @@ public class EndController : MonoBehaviour
         day = GlobalCont.Instance.day;
         patientsHealed = GlobalCont.Instance.patientsHealed;
         patientsDeceased = GlobalCont.Instance.patientsDeceased;
+        gameDifficulty = GlobalCont.Instance.gameDifficulty;
     }
 
     public void SetTextToEndGameScreen()
@@ -53,8 +64,19 @@ public class EndController : MonoBehaviour
         dayText.text = day.ToString();
         patientsSavedText.text = patientsHealed.ToString();
         patientsLostText.text = patientsDeceased.ToString();
+    }
 
-        
+    public void ClickCredits()
+    {
+        creditsPanel.SetActive(true);
 
+        // Play Click Sound
+        clickGood1.Play();
+    }
+
+    public void ExitCreditsPanel()
+    {
+        creditsPanel.SetActive(false);
+        clickGood2.Play();
     }
 }

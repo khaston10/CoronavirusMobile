@@ -725,8 +725,9 @@ public class GlobalPatientData : MonoBehaviour
 "M", "F", "M", "M", "M", "F", "M", "M", "M", "F", "M",
 "M"};
     #endregion
+
     public static string[] statusOfPatients = new string[] { "HEALTHY", "INFECTED", "DEHYDRATED", "PNEUMONIA", "CRITICAL", "DECEASED" };
-    public static Sprite[] picOfPatient = new Sprite[4];
+    public static Sprite[] picOfPatient = new Sprite[12];
 
     private void Awake()
     {
@@ -734,8 +735,6 @@ public class GlobalPatientData : MonoBehaviour
         {
             picOfPatient[i] = pics[i];
         }
-        
-
     }
 
    

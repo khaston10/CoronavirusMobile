@@ -760,7 +760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 500, y: -125}
+  m_AnchoredPosition: {x: 500, y: -124.999756}
   m_SizeDelta: {x: -1200, y: -550}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &259280583
@@ -1475,7 +1475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 581b927fa75e6fb4c807d3118e7eee16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  URL: https://thatsthefinger.com/
+  URL: https://www.unitedway.org/recovery/covid19?utm_source=direct&utm_medium=web&utm_campaign=covid19&utm_content=learnmore#
 --- !u!4 &803511501
 Transform:
   m_ObjectHideFlags: 0
@@ -1628,7 +1628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &851484057
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1869,14 +1869,14 @@ RectTransform:
   m_GameObject: {fileID: 947134737}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6354, y: 1.6354, z: 1.6354}
+  m_LocalScale: {x: 3.7692702, y: 3.7692702, z: 3.7692702}
   m_Children: []
   m_Father: {fileID: 1360072100}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 43}
   m_SizeDelta: {x: 0, y: -50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &947134739
@@ -2253,7 +2253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+  m_Color: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2910,7 +2910,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Credits
+  m_Text: A DEAD PROPELLER GAME
 --- !u!222 &1939870313
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3032,8 +3032,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 201}
-  m_SizeDelta: {x: -600, y: 50}
+  m_AnchoredPosition: {x: 0, y: -21}
+  m_SizeDelta: {x: -600, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2094477893
 MonoBehaviour:
@@ -3066,7 +3066,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Information coming soon!
+  m_Text: "DEVELOPERS\n\nKevin Haston\nBrett Kehoe\n\nMUSIC\n\nCathran\r@CathranMusic"
 --- !u!222 &2094477894
 CanvasRenderer:
   m_ObjectHideFlags: 0

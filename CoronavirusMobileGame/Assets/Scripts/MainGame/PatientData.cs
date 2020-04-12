@@ -137,13 +137,17 @@ public class PatientData : MonoBehaviour
         sexOfPatient = GlobalPatientData.sexesOfPatients[randomIndex];
         statusOfPatient = GlobalPatientData.statusOfPatients[Random.Range(1, 4)];
 
-        if(sexOfPatient == "M")
+        if(sexOfPatient == "F")
         {
-            picOfPatient = GlobalPatientData.picOfPatient[Random.Range(2,4)];
+            if (ageOfPatient < 22) picOfPatient = GlobalPatientData.picOfPatient[Random.Range(0, 2)];
+            else if (ageOfPatient < 45) picOfPatient = GlobalPatientData.picOfPatient[Random.Range(2, 4)];
+            else picOfPatient = GlobalPatientData.picOfPatient[Random.Range(4, 6)];
         }
         else
         {
-            picOfPatient = GlobalPatientData.picOfPatient[Random.Range(0, 2)];
+            if (ageOfPatient < 22) picOfPatient = GlobalPatientData.picOfPatient[Random.Range(6, 8)];
+            else if (ageOfPatient < 45) picOfPatient = GlobalPatientData.picOfPatient[Random.Range(8, 10)];
+            else picOfPatient = GlobalPatientData.picOfPatient[Random.Range(10, 12)];
         }
     }
     #endregion

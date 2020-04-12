@@ -78,6 +78,8 @@ public class Main : MonoBehaviour
     // This section hold the physical doctor and animations.
     public GameObject doctorPrefab1;
     public GameObject doctorPrefab2;
+    public GameObject doctorPrefab3;
+    public GameObject doctorPrefab4;
     public GameObject doctor;
     public Animator docAnim;
     public float doctorSpeed;
@@ -93,11 +95,34 @@ public class Main : MonoBehaviour
     private bool needsToWashHands;
     public float warningTime; // The warning bubble will turn more serious if there is only this amount of time left.
     private bool handWashWarning;
+    private bool movingDisabledForHandWashing;
+
+    // Handles soap animation.
+    public GameObject soapBubblePrefab;
+    public GameObject sink;
+    private GameObject tempSoapBubble;
+    private GameObject[] soapBubbles = new GameObject[10];
+
 
     #endregion
 
-    #region Audio Sources
-    public AudioSource musicSource;
+    #region Variables - SupplyPanel
+
+    public GameObject supplyPanel;
+    public int[] numberOfSupplies; // 0 - quantity of masks, 1 - quantity of IVs, ...
+    public Text[] quantityOfMaskText;
+    public Text[] quantityOfIVText;
+    public Text[] quantityOfCoughText;
+    public Text[] quantityOfVenText;
+    public Text[][] quantityOfSuppliesText = new Text[4][];
+    public int currentMoney;
+    public Text currentMoneyText;
+    public int[] costOfSupplies;
+
+#endregion
+
+#region Audio Sources
+public AudioSource musicSource;
     public AudioSource clickGood1;
     public AudioSource clickGood2;
     public AudioSource clickBad1;
@@ -133,6 +158,7 @@ public class Main : MonoBehaviour
         // Set text objects to inital values.
         dayText.text = "1";
         numberOfNewPatientsText.text = "0";
+        currentMoneyText.text = currentMoney.ToString();
 
         // Load Doctor Data to screen.
         LoadDoctorsPage();
@@ -146,7 +172,13 @@ public class Main : MonoBehaviour
         bedButtonsForAllBeds[5] = bedButtons6;
         bedButtonsForAllBeds[6] = handWashButtons;
 
-        for(int i = 0; i < 6; i++)
+        // Setup the supplyText array.
+        quantityOfSuppliesText[0] = quantityOfMaskText;
+        quantityOfSuppliesText[1] = quantityOfIVText;
+        quantityOfSuppliesText[2] = quantityOfCoughText;
+        quantityOfSuppliesText[3] = quantityOfVenText;
+
+        for (int i = 0; i < 6; i++)
         {
             SetBedButtonsOnOff(i, false);
             SetNewPatientButtonsOnOff(i, true);
@@ -157,8 +189,10 @@ public class Main : MonoBehaviour
         SetBedButtonsOnOff(6, false);
 
         // Create Doctor from Prefab that matches.
-        if (nameOfDoctor == "Kristen") doctor = Instantiate(doctorPrefab1);
-        else doctor = Instantiate(doctorPrefab2);
+        if (nameOfDoctor == "Nate") doctor = Instantiate(doctorPrefab1);
+        else if (nameOfDoctor == "Ariko") doctor = Instantiate(doctorPrefab2);
+        else if (nameOfDoctor == "Nataly") doctor = Instantiate(doctorPrefab3);
+        else doctor = Instantiate(doctorPrefab4);
         doctor.transform.position = Vector3.zero;
 
         //Initialize Doctor Animator.
@@ -169,8 +203,12 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Move Doctor Towards Trigger if Doc Is Moving.
-        doctor.transform.position = Vector3.MoveTowards(doctor.transform.position, targetPos, doctorSpeed * Time.deltaTime);
+        if (movingDisabledForHandWashing == false)
+        {
+            // Move Doctor Towards Trigger if Doc Is Moving.
+            doctor.transform.position = Vector3.MoveTowards(doctor.transform.position, targetPos, doctorSpeed * Time.deltaTime);
+        }
+        
 
         // Main Game Loop - THINGS PUT HERE NEED TO BE CLEAN AND STREAM LINED!!!
         mainTimer += Time.deltaTime; // Update Timer
@@ -281,6 +319,7 @@ public class Main : MonoBehaviour
             timeBetweenHandWashMin = 20;
             timeBetweenHandWashMax = 120;
             warningTime = 10;
+            currentMoney = 50;
         }
 
         else if (gameDifficulty == 1)
@@ -291,6 +330,7 @@ public class Main : MonoBehaviour
             timeBetweenHandWashMin = 20;
             timeBetweenHandWashMax = 60;
             warningTime = 8;
+            currentMoney = 20;
         }
 
         else
@@ -301,6 +341,7 @@ public class Main : MonoBehaviour
             timeBetweenHandWashMin = 20;
             timeBetweenHandWashMax = 40;
             warningTime = 5;
+            currentMoney = 0;
         }
     }
 
@@ -342,6 +383,10 @@ public class Main : MonoBehaviour
 
                 // Destroy the physical patient image.
                 RemovePhysicalPatientFromBed(doctorsCurrentBed);
+
+                // Player gets MONEY$$$$
+                currentMoney += 5;
+                currentMoneyText.text = currentMoney.ToString();
 
                 // Play Click Sound
                 clickGood1.Play();
@@ -540,7 +585,7 @@ public class Main : MonoBehaviour
 
 
     }
-
+     
     public void ClickPatientPanel(int bedNumber)
     {
         HidePatientPanels();
@@ -571,12 +616,13 @@ public class Main : MonoBehaviour
 
     public void PlacePhysicalPatientOnBed(int bed)
     {
-        // Pic a random physical patient image. This will need to be updated when we worry about matching the image to the profile pic.
-        physicalPatientTemp = Instantiate(physicalPatientPrefabs[Random.Range(0, physicalPatientPrefabs.Length)]);
+        // Pic a physical patient image depending on the age and gender.
+        var indexTemp = System.Array.IndexOf(GlobalPatientData.picOfPatient, currentPatients[bed].GetComponent<PatientData>().picOfPatient);
+        physicalPatientTemp = Instantiate(physicalPatientPrefabs[indexTemp]);
         activePhysicalPatients[bed] = physicalPatientTemp;
 
         // Place patient on bed.
-        physicalPatientTemp.transform.position = physicalBeds[bed].transform.position;
+        physicalPatientTemp.transform.position = physicalBeds[bed].transform.position + (Vector3.up * .6f);
     }
 
     public void RemovePhysicalPatientFromBed(int bed)
@@ -620,10 +666,10 @@ public class Main : MonoBehaviour
     public void TreatPatientAtBed(int bed, int treatment)
     {
         // Check to see if doctor is in range to treat.
-        if (bedButtonsForAllBeds[bed][treatment].sprite.name == "GreenCircle")
+        if (bedButtonsForAllBeds[bed][treatment].sprite.name == "GreenCircle" && currentPatients[bed] != null)
         {
-            // Check To see if the user selected the correct treatment.
-            if (currentPatients[bed].GetComponent<PatientData>().statusOfPatient == GlobalPatientData.statusOfPatients[treatment + 1])
+            // Check To see if the user selected the correct treatment and if there is supply.
+            if (currentPatients[bed].GetComponent<PatientData>().statusOfPatient == GlobalPatientData.statusOfPatients[treatment + 1] && numberOfSupplies[treatment] > 0)
             {
                 // Play Click Sound
                 clickGood1.Play();
@@ -631,9 +677,12 @@ public class Main : MonoBehaviour
                 // Destory the warning Message and change patients bool, so they get healther.
                 DestroyWarningBubbleAtBed(bed + 1);
                 currentPatients[bed].GetComponent<PatientData>().needsTreatment = false;
+
+                // Update supply information.
+                UpdateSupplyIntAndText(treatment, -1);
             }
 
-        else clickBad1.Play();
+            else clickBad1.Play();
 
         }
 
@@ -663,13 +712,13 @@ public class Main : MonoBehaviour
         // When the doctor reachers the trigger the doctor should stop and the idle anim plays.
 
         // Decide if the trigger is left or right of the doctor to play the correct anim.
-        if(doctor.transform.position.x - roomTriggers[triggerNum].transform.position.x < 0)
+        if (doctor.transform.position.x - roomTriggers[triggerNum].transform.position.x < 0 && movingDisabledForHandWashing == false)
         {
             // Play Right Animation
             docAnim.Play("MWalkRight");
         }
 
-        else
+        else if (movingDisabledForHandWashing == false)
         {
             // Play Left Animation TODO.
             docAnim.Play("MWalkLeft");
@@ -689,20 +738,118 @@ public class Main : MonoBehaviour
         // Check to see if doctor is in range to wash.
         if (bedButtonsForAllBeds[6][0].sprite.name == "GreenCircle" && needsToWashHands)
         {
+            handWashingTimer = 0;
+
             // Play Click Sound.
             clickGood1.Play();
 
-            DestroyWarningBubbleAtBed(0);
-            needsToWashHands = false;
-            handWashWarning = false;
-            SetNewTimeBetweenHandWash(timeBetweenHandWashMin, timeBetweenHandWashMax);
+            // Wait For Hands To Wash
+            StartCoroutine(WaitForHandsToWash());
+
         }
 
-        else clickBad1.Play(); ;
+        else clickBad1.Play();
     }
+
+    IEnumerator WaitForHandsToWash()
+    {
+        // Play the animation and switch the bool so the doctor can not walk away.
+        movingDisabledForHandWashing = true;
+        docAnim.Play("MWash");
+        CreateSoapBubbles();
+
+        // Suspend execution for 5 seconds
+        yield return new WaitForSeconds(5);
+
+        // Reset the bool and set the doctors target back to the sink. Incase the user clicked another 
+        // location during hand washing.
+        movingDisabledForHandWashing = false;
+        MoveDocToTrigger(0);
+        docAnim.Play("MIdle");
+
+        // Reset all data back so game can continue
+        RemoveSoapBubbles();
+        DestroyWarningBubbleAtBed(0);
+        needsToWashHands = false;
+        handWashWarning = false;
+        SetNewTimeBetweenHandWash(timeBetweenHandWashMin, timeBetweenHandWashMax);
+        statusOfDoctor = "HEALTHY";
+        statusOfDoctorText.text = statusOfDoctor;
+
+
+    }
+
+    public void CreateSoapBubbles()
+    { 
+        for (int i = 0; i < soapBubbles.Length; i++)
+        {
+            var randUp = Random.Range(-.4f, .6f);
+            var randRight = Random.Range(-.1f, .1f);
+            tempSoapBubble = Instantiate(soapBubblePrefab);
+            tempSoapBubble.transform.position = sink.transform.position + (Vector3.up * randUp) + (Vector3.right * randRight);
+            soapBubbles[i] = tempSoapBubble;
+        }
+    }
+     
+    public void RemoveSoapBubbles()
+    {
+        for (int i = 0; i < soapBubbles.Length; i++)
+        {
+
+            Destroy(soapBubbles[i]);
+        }
+    }
+
+
 
     #endregion
 
+
+    #region Functions - Supply Quanity
+
+    public void ClickOpenCloseSupplyPanel()
+    {
+        // Check to see if panel is closed. If it is, open it.
+        if (supplyPanel.activeSelf)
+        {
+            supplyPanel.SetActive(false);
+        }
+
+        else supplyPanel.SetActive(true);
+    }
+
+    public void UpdateSupplyIntAndText(int supplyType, int quanity)
+    {
+        // supply type - 0: masks, 1: Ivs
+
+        numberOfSupplies[supplyType] += quanity;
+
+        for (int i = 0; i < quantityOfSuppliesText[supplyType].Length; i++)
+            quantityOfSuppliesText[supplyType][i].text = numberOfSupplies[supplyType].ToString();
+    }
+
+    public void ClickBuySupplies(int supplyType)
+    {
+        // Check to see if player has money.
+        if (currentMoney > costOfSupplies[supplyType])
+        {
+            clickGood1.Play();
+            currentMoney -= costOfSupplies[supplyType];
+            currentMoneyText.text = currentMoney.ToString();
+            UpdateSupplyIntAndText(supplyType, 10);
+
+            ClickOpenCloseSupplyPanel();
+        }
+
+        else
+        {
+            clickBad1.Play();
+        }
+
+
+    }
+
+    #endregion
 
     #endregion
 }

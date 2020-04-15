@@ -131,7 +131,7 @@ public class PatientData : MonoBehaviour
     #region Functions
     public void LoadPatientData()
     {
-        randomIndex = Random.Range(0, 2586);
+        randomIndex = Random.Range(0, 12);
         nameOfPatient = GlobalPatientData.namesOfPatients[randomIndex];
         ageOfPatient = GlobalPatientData.agesOfPatients[randomIndex];
         sexOfPatient = GlobalPatientData.sexesOfPatients[randomIndex];

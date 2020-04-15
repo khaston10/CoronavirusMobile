@@ -9,6 +9,8 @@ public class GlobalPatientData : MonoBehaviour
     //It will be randomly selected when a character is created.
     public Sprite[] pics;
 
+    #region Hide Large Arrays
+    /*
     #region Patientnames
     public static string[] namesOfPatients = new string[] { "Mary", "John", "Robert", "William", "James", "Dorothy", "Helen", "Charles", "George", "Joseph", "Margaret",
 "Ruth", "Edward", "Betty", "Richard", "Virginia", "Frank", "Thomas", "Donald", "Mildred", "Elizabeth", "Harold",
@@ -725,6 +727,13 @@ public class GlobalPatientData : MonoBehaviour
 "M", "F", "M", "M", "M", "F", "M", "M", "M", "F", "M",
 "M"};
     #endregion
+    */
+
+    #endregion
+
+    public static string[] namesOfPatients = new string[] { "Mary", "John", "Robert", "William", "James", "Dorothy", "Helen", "Charles", "George", "Joseph", "Margaret" };
+    public static int[] agesOfPatients = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    public static string[] sexesOfPatients = new string[] { "F", "M", "M", "M", "M", "F", "F", "M", "M", "M", "F" };
 
     public static string[] statusOfPatients = new string[] { "HEALTHY", "INFECTED", "DEHYDRATED", "PNEUMONIA", "CRITICAL", "DECEASED" };
     public static Sprite[] picOfPatient = new Sprite[12];
